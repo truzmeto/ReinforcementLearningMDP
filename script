@@ -1,0 +1,4 @@
+#!/bin/bash
+
+mvn exec:java -Dexec.mainClass="assignment4.EasyGridWorldLauncher" > output/easy.txt
+mvn exec:java -Dexec.mainClass="assignment4.HardGridWorldLauncher" > output/hard.txt
