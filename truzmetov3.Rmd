@@ -17,12 +17,18 @@ urlcolor: blue
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Ownership of the following report developed as a result of assigned institutional effort, an assignment of the CS 7641 Machine Learning course shall reside with GT and the instructors of this class. If the document is released into the public domain it will violate the GT Honor Code
+
+
+
+
 ```{r, echo=FALSE}
 library("lattice")
 library("plyr")
 library("ggplot2")
 library("Rmisc")
 ```
+
 
 ```{r data_preprocessing, echo=FALSE,eval=TRUE}
 system("tail -7 output/easy.txt > output/easy_reward.txt
@@ -112,7 +118,7 @@ p1 <- ggplot(Easy_steps , aes(x=Iterations)) +
     #geom_point() +
     theme_bw() +
     labs(title = "", y = "Steps", color="") +
-    theme(legend.position =c(0.7,0.8), axis.title = element_text(size = 12.0),
+    theme(legend.position = "none", axis.title = element_text(size = 12.0),
         axis.text = element_text(size=8, face = "bold"),
         plot.title = element_text(size = 12, hjust = 0.5),
         #text = element_text(family="Times New Roman"),
@@ -141,7 +147,8 @@ p3 <- ggplot(Easy_time, aes(x=Iterations)) +
     #geom_point() +
     theme_bw() +
     labs(title = "", y = "Time(ms)", color="") +
-    theme(legend.position = "none", axis.title = element_text(size = 12.0),
+    theme(legend.position = c(0.2,0.8),
+        axis.title = element_text(size = 12.0),
         axis.text = element_text(size=8, face = "bold"),
         plot.title = element_text(size = 12, hjust = 0.5),
         #text = element_text(family="Times New Roman"),
