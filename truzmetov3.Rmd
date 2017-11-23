@@ -1,0 +1,221 @@
+---
+title: "CS7641 Machine Learning Assignment 4 by Georgia Tech: Markov Decision Process"
+author: "T. Ruzmetov"
+date: "November 20, 2017"
+output:
+    pdf_document:
+        fig_caption: yes
+urlcolor: blue
+---
+
+\fontfamily{cmr}
+\fontsize{10}{15}
+\selectfont
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE}
+library("lattice")
+library("plyr")
+library("ggplot2")
+library("Rmisc")
+```
+
+```{r data_preprocessing, echo=FALSE,eval=TRUE}
+system("tail -7 output/easy.txt > output/easy_reward.txt
+        tail -14 output/easy.txt | head -7 > output/easy_time.txt
+        tail -21 output/easy.txt | head -7 > output/easy_steps.txt")
+
+system("tail -7 output/hard.txt > output/hard_reward.txt
+        tail -14 output/hard.txt | head -7 > output/hard_time.txt
+        tail -21 output/hard.txt | head -7 > output/hard_steps.txt")
+
+# function to reshape input data
+reshape_data <- function(data_in) {
+        col_names <- c("Iterations","Value","Policy","QLearning") #data_in$V1
+        data_in$V1 <- NULL
+        data_out <- t(data_in)
+        row.names(data_out) <- NULL
+        colnames(data_out) <- col_names
+        data_out <- as.data.frame(data_out)
+}
+```
+
+
+```{r read_data,echo=FALSE,eval=TRUE}
+Easy_steps <- read.table("output/easy_steps.txt",sep = "," ,skip = 3)
+Easy_reward <- read.table("output/easy_reward.txt",sep = "," ,skip = 3)
+Easy_time <- read.table("output/easy_time.txt",sep = "," ,skip = 3)
+Easy_steps <- reshape_data(Easy_steps)
+Easy_reward <- reshape_data(Easy_reward)
+Easy_time <- reshape_data(Easy_time)
+
+Hard_steps <- read.table("output/hard_steps.txt",sep = "," ,skip = 3)
+Hard_reward <- read.table("output/hard_reward.txt",sep = "," ,skip = 3)
+Hard_time <- read.table("output/hard_time.txt",sep = "," ,skip = 3)
+Hard_steps <- reshape_data(Hard_steps)
+Hard_reward <- reshape_data(Hard_reward)
+Hard_time <- reshape_data(Hard_time)
+```
+
+
+
+## Assignment Description
+
+
+## Markov Decision Process
+
+
+\begin{figure}
+    \center
+        \includegraphics[width=12.0cm]{plots/Both_Poblems.pdf}
+    \center
+  \caption{}
+  \label{fig:both_probs}
+\end{figure}
+
+
+
+\begin{figure}
+    \center
+        \includegraphics[width=16.0cm]{plots/Easy_OptMaps.pdf}
+    \center
+  \caption{}
+  \label{fig:easy_opt_map}
+\end{figure}
+
+
+\begin{figure}
+    \center
+        \includegraphics[width=16.0cm]{plots/Hard_OptMaps.pdf}
+    \center
+  \caption{}
+  \label{fig:hard_opt_map}
+\end{figure}
+
+
+## Policy Iiteration
+
+
+## Value Iteration
+
+
+```{r,echo=FALSE,fig.height=4.,fig.width=12,fig.cap= "Easy problem results"}
+
+p1 <- ggplot(Easy_steps , aes(x=Iterations)) +
+    geom_line(aes(y = Value, colour = "Value")) + 
+    geom_line(aes(y = Policy, colour = "Policy")) +
+    geom_line(aes(y = QLearning, colour = "QLearning")) +
+    #geom_point() +
+    theme_bw() +
+    labs(title = "", y = "Steps", color="") +
+    theme(legend.position =c(0.7,0.8), axis.title = element_text(size = 12.0),
+        axis.text = element_text(size=8, face = "bold"),
+        plot.title = element_text(size = 12, hjust = 0.5),
+        #text = element_text(family="Times New Roman"),
+        axis.text.x = element_text(colour="black"),
+        axis.text.y = element_text(colour="black"))
+
+p2 <- ggplot(Easy_reward , aes(x=Iterations)) +
+    geom_line(aes(y = Value, colour = "Value")) + 
+    geom_line(aes(y = Policy, colour = "Policy")) +
+    geom_line(aes(y = QLearning, colour = "QLearning")) +
+    #geom_point() +
+    theme_bw() +
+    labs(title = "", y = "Reward", color="") +
+    theme(legend.position = "none",
+          axis.title = element_text(size = 12.0),
+          axis.text = element_text(size=8, face = "bold"),
+          plot.title = element_text(size = 12, hjust = 0.5),
+          #text = element_text(family="Times New Roman"),
+          axis.text.x = element_text(colour="black"),
+          axis.text.y = element_text(colour="black"))
+
+p3 <- ggplot(Easy_time, aes(x=Iterations)) +
+    geom_line(aes(y = Value , colour = "Value")) + 
+    geom_line(aes(y = Policy, colour = "Policy")) +
+    geom_line(aes(y = QLearning, colour = "QLearning")) +
+    #geom_point() +
+    theme_bw() +
+    labs(title = "", y = "Time(ms)", color="") +
+    theme(legend.position = "none", axis.title = element_text(size = 12.0),
+        axis.text = element_text(size=8, face = "bold"),
+        plot.title = element_text(size = 12, hjust = 0.5),
+        #text = element_text(family="Times New Roman"),
+        axis.text.x = element_text(colour="black"),
+        axis.text.y = element_text(colour="black"))
+
+
+multiplot(p1,p2,p3,cols=3)
+```
+
+
+
+
+```{r,echo=FALSE,fig.height=4.,fig.width=12,fig.cap= "Hard problem results"}
+
+p1 <- ggplot(Hard_steps , aes(x=Iterations)) +
+    geom_line(aes(y = Value, colour = "Value")) + 
+    geom_line(aes(y = Policy, colour = "Policy")) +
+    geom_line(aes(y = QLearning, colour = "QLearning")) +
+    #geom_point() +
+    theme_bw() +
+    labs(title = "", y = "Steps", color="") +
+    theme(legend.position =c(0.7,0.8), axis.title = element_text(size = 12.0),
+        axis.text = element_text(size=8, face = "bold"),
+        plot.title = element_text(size = 12, hjust = 0.5),
+        #text = element_text(family="Times New Roman"),
+        axis.text.x = element_text(colour="black"),
+        axis.text.y = element_text(colour="black"))
+
+p2 <- ggplot(Hard_reward , aes(x=Iterations)) +
+    geom_line(aes(y = Value, colour = "Value")) + 
+    geom_line(aes(y = Policy, colour = "Policy")) +
+    geom_line(aes(y = QLearning, colour = "QLearning")) +
+    #geom_point() +
+    theme_bw() +
+    labs(title = "", y = "Reward", color="") +
+    theme(legend.position = "none",
+          axis.title = element_text(size = 12.0),
+          axis.text = element_text(size=8, face = "bold"),
+          plot.title = element_text(size = 12, hjust = 0.5),
+          #text = element_text(family="Times New Roman"),
+          axis.text.x = element_text(colour="black"),
+          axis.text.y = element_text(colour="black"))
+
+p3 <- ggplot(Hard_time, aes(x=Iterations)) +
+    geom_line(aes(y = Value , colour = "Value")) + 
+    geom_line(aes(y = abs(Policy), colour = "Policy")) +
+    geom_line(aes(y = QLearning, colour = "QLearning")) +
+    #geom_point() +
+    theme_bw() +
+    labs(title = "", y = "Time(ms)", color="") +
+    theme(legend.position = "none", axis.title = element_text(size = 12.0),
+        axis.text = element_text(size=8, face = "bold"),
+        plot.title = element_text(size = 12, hjust = 0.5),
+        #text = element_text(family="Times New Roman"),
+        axis.text.x = element_text(colour="black"),
+        axis.text.y = element_text(colour="black"))
+
+
+multiplot(p1,p2,p3,cols=3)
+```
+
+
+\pagebreak
+
+
+### Q-Learning
+
+\pagebreak
+
+
+## Conclusion
+
+
+
+
+
