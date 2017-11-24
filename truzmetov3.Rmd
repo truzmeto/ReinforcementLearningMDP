@@ -72,6 +72,8 @@ Hard_time <- reshape_data(Hard_time)
 ## Assignment Description
 
 
+
+
 ## Markov Decision Process
 
 
@@ -79,7 +81,8 @@ Hard_time <- reshape_data(Hard_time)
     \center
         \includegraphics[width=12.0cm]{plots/Both_Poblems.pdf}
     \center
-  \caption{}
+  \caption{Here we show 6x6(left plot) easy and 13x13(right plot) hard grid world problem topologies. As depicted, grey circle is the agent and
+  blue square at top right corner is final destination.}
   \label{fig:both_probs}
 \end{figure}
 
@@ -89,7 +92,7 @@ Hard_time <- reshape_data(Hard_time)
     \center
         \includegraphics[width=16.0cm]{plots/Easy_OptMaps.pdf}
     \center
-  \caption{}
+  \caption{Finale, optimal rout is depicted for all three different algorithms with the heat map.}
   \label{fig:easy_opt_map}
 \end{figure}
 
@@ -224,5 +227,15 @@ multiplot(p1,p2,p3,cols=3)
 
 
 
+## References
 
+1. https://github.com/truzmeto/RL_MDP
+
+2. https://github.com/juanjose49/omscs-cs7641-machine-learning-assignment-4
+
+3. T. M. Mitchell, Machine Learning. McGraw Hill, 1997.
+
+4. L. P. Kaelbling, M. Littman, and A. Moore, ’Reinforcement learning: A survey,’ Journal of Artificial Intelligence Research, vol. 4, pp. 237-285, 1996.7
+
+5. R. S. Sutton and A. G. Barto, Reinforcement Learning: An Introduction. London, England: The MIT Press, 1998.
 
