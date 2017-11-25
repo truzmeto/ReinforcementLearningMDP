@@ -1,6 +1,17 @@
 # CS7641 Assignment 4
-## Credit goes to Juan J. San Emeterio
 
+## Project Setup on Ubuntu
 
-## Project Setup
-1. Clone or download the assignment 4 repository.
+Follow instructions below in order to get the code working
+
+1. clone the repository
+   git clone https://github.com/truzmeto/RL_MDP.git 
+
+2. install maven
+   sudo apt-get install maven
+
+3. change dir to RL_MDP dir and compile burlap
+   cd RL_MDP
+   mvn compile
+
+4. 
