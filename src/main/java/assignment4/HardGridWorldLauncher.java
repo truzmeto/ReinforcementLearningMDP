@@ -31,7 +31,9 @@ public class HardGridWorldLauncher {
 	
 	private static Integer MAX_ITERATIONS = 1000;
 	private static Integer NUM_INTERVALS = 100;
-
+    //        private static double epsilon = 0.1;
+    //    private static double lr = 0.99;
+    
 	protected static int[][] userMap = new int[][] { 
 										{1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0},
 										{0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0},
@@ -81,7 +83,7 @@ public class HardGridWorldLauncher {
 			runner.runPolicyIteration(gen,domain,initialState, rf, tf, showPolicyIterationPolicyMap);
 		}
 		if(runQLearning){
-			runner.runQLearning(gen,domain,initialState, rf, tf, env, showQLearningPolicyMap);
+		    runner.runQLearning(gen,domain,initialState, rf, tf, env, showQLearningPolicyMap);
 		}
 		AnalysisAggregator.printAggregateAnalysis();
 	}

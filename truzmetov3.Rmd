@@ -17,7 +17,8 @@ urlcolor: blue
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Ownership of the following report developed as a result of assigned institutional effort, an assignment of the CS 7641 Machine Learning course shall reside with GT and the instructors of this class. If the document is released into the public domain it will violate the GT Honor Code
+
+*Ownership of the following report developed as a result of assigned institutional effort, an assignment of the CS 7641 Machine Learning course shall reside with GT and the instructors of this class. If the document is released into the public domain it will violate the GT Honor Code*
 
 
 
@@ -69,13 +70,11 @@ Hard_time <- reshape_data(Hard_time)
 
 
 
-## Assignment Description
+## Introduction 
 
-
-
-
-## Markov Decision Process
-
+In this project, we explore Markov Decision Process on two grid world problems. One with small number of states(6x6 grid), while
+the other one has large number of states(13x13). Initial and finale positions for an agent is same, but structure of grid(maze) is
+different. We solve both problems via three different approaches: value iteration, policy iteration and Q-learning.       
 
 \begin{figure}
     \center
@@ -86,7 +85,71 @@ Hard_time <- reshape_data(Hard_time)
   \label{fig:both_probs}
 \end{figure}
 
+## Problem Setup. Why it is interesting?
 
+
+
+
+## Markov Decision Process
+
+MDP is stochastic decision making proceess, where  the policy learnt by an agent for
+selectiong next action is based on current observed state and action. Besides, this new
+policy depends only on nearest previous state and action and not on earlier states which is
+called Markovian property. The estimations made based on the Markovian property are as good
+as the estimations made with the knowledge of the full history up to that point.
+
+
+## Value Iteration
+
+Value iteration uses Belmans equation, which essentialy states that
+the true value (or utility) of a state is the immediate reward for that state, plus
+the expected discounted reward if the agent acted optimally from that point on:
+
+$$U(s) = R(s) + \gamma argmax_{a} \sum_{s^{'}}T(s,a,s^{'})U(s^{'})$$
+
+1.  Assign each state a random value
+2.  For each state, calculate its new utility based on its neighbor’s utilities.
+3.  Update each state’s utility based on the calculation above: $U_{i+1}(s) = R(s) + \gamma argmax_{a} \sum_{s^{'}}T(s,a,s^{'})U_{i}(s^{'})$
+4.  Stop upon convergence.
+
+This algorithm is guaranteed to converge to the optimal solutions.
+
+
+## Policy Iiteration
+
+In policy iteration method we directly and iteratively update policy untill we reach optimal policy. 
+We can do so by modifying value iteration to iterate over policies. We start with a random policy, compute
+each state’s utility given that policy, and then select a new optimal policy. Here is the algorithm:
+
+1. Randomly initilize policies for all states
+2. Evaluate $U_{t}=U^{\pi_{t}}$ given $\pi_{t}$
+3. Improve $\pi_{t+1} = argmax_{a} \sum{T(s,a,s^{'})U_{t}(s^{'})}$
+
+and Belman's equation simplifies into n linear equations with n unknowns that is easy to solve:
+$U_{i+1}(s) = R(s) + \gamma \sum_{s^{'}}T(s,\pi_{t}(s),s^{'})U_{i}(s^{'})$
+
+
+## Q-Learning
+
+Value Iteration and Policy Iterations rely on domain knowledge, where agent accurately
+knows the transition function and the reward for all states in the environment. In contrast,
+in Q-lerning learns a policy or value function directly from experience (model-free).
+Q-learning estimates optimal Q-values of an MDP, where its behavior is dictated by
+taking actions greedily with respect to the learned Q-values[4].
+
+
+1. Arbitrarily initialize Q-values for all state-action pairs
+2. Then, until learning converges...
+    * Choose an action (a) in the current world state (s) based on current Q-value estimates.
+    * Take the action (a) and observe the the outcome state ($s^{'}$) and reward (r).
+    * Update  $Q(s,a) = Q(s,a) + \alpha [r + \gamma max_{a^{'}} Q(s^{'},a^{'}) Q(s,a)]$      
+
+
+## Easy Grid World Problem
+
+Easy Grid World problem composed of 6x6 grid, where agent starts its journey at bottom left corner and
+by finding optimal policy should end its journey at top right corner for a given structure of grid Fig1.
+All three algorithms are applied to this problem. Optimal policies are shown in Fig2. 
 
 \begin{figure}
     \center
@@ -95,6 +158,12 @@ Hard_time <- reshape_data(Hard_time)
   \caption{Finale, optimal rout is depicted for all three different algorithms with the heat map.}
   \label{fig:easy_opt_map}
 \end{figure}
+
+
+
+
+
+## Hard Grid World Problem
 
 
 \begin{figure}
@@ -106,10 +175,6 @@ Hard_time <- reshape_data(Hard_time)
 \end{figure}
 
 
-## Policy Iiteration
-
-
-## Value Iteration
 
 
 ```{r,echo=FALSE,fig.height=4.,fig.width=12,fig.cap= "Easy problem results"}
@@ -229,13 +294,11 @@ multiplot(p1,p2,p3,cols=3)
 
 ## References
 
-1. https://github.com/truzmeto/RL_MDP
+1. T. M. Mitchell, Machine Learning. McGraw Hill, 1997.
+2. L. P. Kaelbling, M. Littman, and A. Moore, ’Reinforcement learning: A survey,’ Journal of Artificial Intelligence Research, vol. 4, pp. 237-285, 1996.7
+3. R. S. Sutton and A. G. Barto, Reinforcement Learning: An Introduction. London, England: The MIT Press, 1998.
+4. http://burlap.cs.brown.edu/index.html
+5. https://github.com/truzmeto/RL_MDP
+6. https://github.com/juanjose49/omscs-cs7641-machine-learning-assignment-4
 
-2. https://github.com/juanjose49/omscs-cs7641-machine-learning-assignment-4
-
-3. T. M. Mitchell, Machine Learning. McGraw Hill, 1997.
-
-4. L. P. Kaelbling, M. Littman, and A. Moore, ’Reinforcement learning: A survey,’ Journal of Artificial Intelligence Research, vol. 4, pp. 237-285, 1996.7
-
-5. R. S. Sutton and A. G. Barto, Reinforcement Learning: An Introduction. London, England: The MIT Press, 1998.
 
