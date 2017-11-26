@@ -9,7 +9,7 @@ urlcolor: blue
 ---
 
 \fontfamily{cmr}
-\fontsize{10}{15}
+\fontsize{11}{18}
 \selectfont
 
 
@@ -17,11 +17,7 @@ urlcolor: blue
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
 *Ownership of the following report developed as a result of assigned institutional effort, an assignment of the CS 7641 Machine Learning course shall reside with GT and the instructors of this class. If the document is released into the public domain it will violate the GT Honor Code*
-
-
-
 
 ```{r, echo=FALSE}
 library("lattice")
@@ -75,25 +71,26 @@ Hard_time <- reshape_data(Hard_time)
 In this project, we explore Markov Decision Process on two grid world problems. One with small number of states(6x6 grid), while
 the other one has large number of states(13x13). Initial and finale positions for an agent is same, but structure of grid(maze) is
 different. We solve both problems via three different approaches: value iteration, policy iteration and Q-learning.       
+One of the implications of grid world problem that makes it interesting is rout planning. In our daily life, for instance,
+we commute from home (initial state) to work(finale destination) and it is important for us to know the best rout especially
+when we live in a crowded city. Also, by assigning negative reward to states associated with high crime rate blocks we can
+design not just best rout but also safest rout. Traffic information can also be entered into a model to improve the rout.
+Above mentioned example definitely makes grid world problem very interesting to study.
 
 \begin{figure}
     \center
-        \includegraphics[width=12.0cm]{plots/Both_Poblems.pdf}
+        \includegraphics[width=12.0cm]{plots/Both_Problems.pdf}
     \center
   \caption{Here we show 6x6(left plot) easy and 13x13(right plot) hard grid world problem topologies. As depicted, grey circle is the agent and
   blue square at top right corner is final destination.}
   \label{fig:both_probs}
 \end{figure}
 
-## Problem Setup. Why it is interesting?
-
-
-
 
 ## Markov Decision Process
 
-MDP is stochastic decision making proceess, where  the policy learnt by an agent for
-selectiong next action is based on current observed state and action. Besides, this new
+MDP is stochastic decision making process, where  the policy learnt by an agent for
+selecting next action is based on current observed state and action. Besides, this new
 policy depends only on nearest previous state and action and not on earlier states which is
 called Markovian property. The estimations made based on the Markovian property are as good
 as the estimations made with the knowledge of the full history up to that point.
@@ -101,7 +98,7 @@ as the estimations made with the knowledge of the full history up to that point.
 
 ## Value Iteration
 
-Value iteration uses Belmans equation, which essentialy states that
+Value iteration uses Bellman equation, which essentially states that
 the true value (or utility) of a state is the immediate reward for that state, plus
 the expected discounted reward if the agent acted optimally from that point on:
 
@@ -117,15 +114,15 @@ This algorithm is guaranteed to converge to the optimal solutions.
 
 ## Policy Iiteration
 
-In policy iteration method we directly and iteratively update policy untill we reach optimal policy. 
+In policy iteration method we directly and iteratively update policy until we reach optimal policy. 
 We can do so by modifying value iteration to iterate over policies. We start with a random policy, compute
 each state’s utility given that policy, and then select a new optimal policy. Here is the algorithm:
 
-1. Randomly initilize policies for all states
+1. Randomly initialize policies for all states
 2. Evaluate $U_{t}=U^{\pi_{t}}$ given $\pi_{t}$
 3. Improve $\pi_{t+1} = argmax_{a} \sum{T(s,a,s^{'})U_{t}(s^{'})}$
 
-and Belman's equation simplifies into n linear equations with n unknowns that is easy to solve:
+and Bellman's equation simplifies into n linear equations with n unknowns that is easy to solve:
 $U_{i+1}(s) = R(s) + \gamma \sum_{s^{'}}T(s,\pi_{t}(s),s^{'})U_{i}(s^{'})$
 
 
@@ -133,7 +130,7 @@ $U_{i+1}(s) = R(s) + \gamma \sum_{s^{'}}T(s,\pi_{t}(s),s^{'})U_{i}(s^{'})$
 
 Value Iteration and Policy Iterations rely on domain knowledge, where agent accurately
 knows the transition function and the reward for all states in the environment. In contrast,
-in Q-lerning learns a policy or value function directly from experience (model-free).
+Q-learning agent learns a policy or value function directly from experience (model-free).
 Q-learning estimates optimal Q-values of an MDP, where its behavior is dictated by
 taking actions greedily with respect to the learned Q-values[4].
 
@@ -150,27 +147,27 @@ taking actions greedily with respect to the learned Q-values[4].
 Easy Grid World problem composed of 6x6 grid, where agent starts its journey at bottom left corner and
 by finding optimal policy should end its journey at top right corner for a given structure of maze Fig1.
 All three algorithms are applied to this problem. Optimal policies are illustrated in Fig2, where V-values
-are shown via heatmap: blue for high V-values and red for low V-values. Value iteration and policy iteration
-algorithms show similar optimal policy at 300 iterations. They both converge as early as 100 iterations Fig3.
-
-
+that is the expected reward of each state are shown via heatmap: blue for high V-values and red for
+low V-values. Interestingly, states that are close to terminal(goal) state, V-values increase.  
 \begin{figure}
     \center
         \includegraphics[width=16.0cm]{plots/Easy_OptMaps.pdf}
     \center
-  \caption{Finale, optimal rout is depicted for all three different algorithms with the heat map.}
+  \caption{Finale, optimal policy is depicted for all three algorithms with the heat map representing
+            V-values for each cell.}
   \label{fig:easy_opt_map}
 \end{figure}
 
-```{r,echo=FALSE,fig.height=4.,fig.width=12,fig.cap= "Easy problem results"}
-
+```{r,echo=FALSE,fig.height=4.,fig.width=12,fig.cap= "Here we show convergence results for easy problem, where number of iterations are plotted against average number of steps taken from any state to terminal state (a), average reward (b) and finally performance time for all three methods(c)."}
+Easy_steps$Policy[1] <- 200 # just to make it visible
 p1 <- ggplot(Easy_steps , aes(x=Iterations)) +
     geom_line(aes(y = Value, colour = "Value")) + 
     geom_line(aes(y = Policy, colour = "Policy")) +
     geom_line(aes(y = QLearning, colour = "QLearning")) +
     #geom_point() +
     theme_bw() +
-    labs(title = "", y = "Steps", color="") +
+    ylim(0, 200) +
+    labs(title = "a", y = "Steps", color="") +
     theme(legend.position = "none", axis.title = element_text(size = 12.0),
         axis.text = element_text(size=8, face = "bold"),
         plot.title = element_text(size = 12, hjust = 0.5),
@@ -178,13 +175,15 @@ p1 <- ggplot(Easy_steps , aes(x=Iterations)) +
         axis.text.x = element_text(colour="black"),
         axis.text.y = element_text(colour="black"))
 
+Easy_reward$Policy[1] <- -100 # just to make it visible
 p2 <- ggplot(Easy_reward , aes(x=Iterations)) +
     geom_line(aes(y = Value, colour = "Value")) + 
     geom_line(aes(y = Policy, colour = "Policy")) +
     geom_line(aes(y = QLearning, colour = "QLearning")) +
     #geom_point() +
+    ylim(-100, 150) +
     theme_bw() +
-    labs(title = "", y = "Reward", color="") +
+    labs(title = "b", y = "Reward", color="") +
     theme(legend.position = "none",
           axis.title = element_text(size = 12.0),
           axis.text = element_text(size=8, face = "bold"),
@@ -199,7 +198,7 @@ p3 <- ggplot(Easy_time, aes(x=Iterations)) +
     geom_line(aes(y = QLearning, colour = "QLearning")) +
     #geom_point() +
     theme_bw() +
-    labs(title = "", y = "Time(ms)", color="") +
+    labs(title = "c", y = "Time(ms)", color="") +
     theme(legend.position = c(0.2,0.8),
         axis.title = element_text(size = 12.0),
         axis.text = element_text(size=8, face = "bold"),
@@ -208,40 +207,60 @@ p3 <- ggplot(Easy_time, aes(x=Iterations)) +
         axis.text.x = element_text(colour="black"),
         axis.text.y = element_text(colour="black"))
 
-
 multiplot(p1,p2,p3,cols=3)
 ```
+Value iteration and policy iteration algorithms show similar optimal policy at 300 iterations, which 
+suggests that this optimal policy must be the correct policy. Even V-values shown in heatmaps perfectly
+agree with each other. In addition, convergence plots shown in Fig.3 demonstrate that for both value iteration
+and policy iteration methods average reward and average number of steps converge very fast taking less than
+30 iterations Fig3(a,b). In contrast, Q-learning algorithm takes a lot longer time to converge to optimal
+policy. In a heatmap shown for Q-learning in Fig.2, cells (4,1) and (1,3) show the action which is opposite
+to actions of optimal policy suggesting that method hasn't completely converged to an optimal policy. 
+Furthermore, both steps and rewards plotted vs iterations Fig.3 show that Q-learning initially show very high
+fluctuations and slowly converge. After 300 iterations fluctuations reduce to some extent but full convergence 
+is not yet achieved suggesting need for more iterations or hyperparameter optimization. 
+Iterations vs computation time plot shows that policy iteration is most time consuming and Q-learning is
+the least time consuming.    
 
 
-
+\pagebreak
 
 ## Hard Grid World Problem
+
+Hard Grid World problem composed of 13x13 grid, where agent takes a long journey in a topologically
+quite complex maze problem Fig.1(right plot).  Optimal policies are illustrated in Fig4, where V-values
+that is the expected reward of each state are shown via heatmap. Again, surprisingly, value iteration
+and policy iteration algorithms show similar optimal policy evaluated after 1000 iterations. Value iteration
+algorithm solves Bellman's equation by iteratively updating utility function, wheres policy iteration
+approach directly updates policies(iteratively in similar passion) in order to find optimal policy. So, then it
+is not surprising to see both algorithms to result in same finale policy given adequate number of
+iterations since methods have a lot in common. But, one difference we can notice is that value iteration 
+converges faster than policy iteration. 
+
+
+
 
 
 \begin{figure}
     \center
         \includegraphics[width=16.0cm]{plots/Hard_OptMaps.pdf}
     \center
-  \caption{}
+  \caption{Hard Grid World optimal policy is shown for all three algorithms with heat map representing
+            V-values for each cell.}
   \label{fig:hard_opt_map}
 \end{figure}
 
 
-
-
-
-
-
-
-```{r,echo=FALSE,fig.height=4.,fig.width=12,fig.cap= "Hard problem results"}
-
+```{r,echo=FALSE,fig.height=4.,fig.width=12,fig.cap= "Here we demonstrate convergence results for hard problem, where number of iterations are plotted against number of steps taken from any state to terminal state (a), total reward (b) and finally performance time for all three methods(c)"}
+Hard_steps$Policy[1] <- 534 # just to make it visible
 p1 <- ggplot(Hard_steps , aes(x=Iterations)) +
     geom_line(aes(y = Value, colour = "Value")) + 
     geom_line(aes(y = Policy, colour = "Policy")) +
     geom_line(aes(y = QLearning, colour = "QLearning")) +
     #geom_point() +
     theme_bw() +
-    labs(title = "", y = "Steps", color="") +
+    ylim(0, 535) +
+    labs(title = "a", y = "Steps", color="") +
     theme(legend.position =c(0.7,0.8), axis.title = element_text(size = 12.0),
         axis.text = element_text(size=8, face = "bold"),
         plot.title = element_text(size = 12, hjust = 0.5),
@@ -249,13 +268,15 @@ p1 <- ggplot(Hard_steps , aes(x=Iterations)) +
         axis.text.x = element_text(colour="black"),
         axis.text.y = element_text(colour="black"))
 
+Hard_reward$Policy[1] <- -438 # just to make it visible
 p2 <- ggplot(Hard_reward , aes(x=Iterations)) +
     geom_line(aes(y = Value, colour = "Value")) + 
     geom_line(aes(y = Policy, colour = "Policy")) +
     geom_line(aes(y = QLearning, colour = "QLearning")) +
     #geom_point() +
     theme_bw() +
-    labs(title = "", y = "Reward", color="") +
+    ylim(-440, 100) +
+    labs(title = "b", y = "Reward", color="") +
     theme(legend.position = "none",
           axis.title = element_text(size = 12.0),
           axis.text = element_text(size=8, face = "bold"),
@@ -270,7 +291,7 @@ p3 <- ggplot(Hard_time, aes(x=Iterations)) +
     geom_line(aes(y = QLearning, colour = "QLearning")) +
     #geom_point() +
     theme_bw() +
-    labs(title = "", y = "Time(ms)", color="") +
+    labs(title = "c", y = "Time(ms)", color="") +
     theme(legend.position = "none", axis.title = element_text(size = 12.0),
         axis.text = element_text(size=8, face = "bold"),
         plot.title = element_text(size = 12, hjust = 0.5),
@@ -286,12 +307,12 @@ multiplot(p1,p2,p3,cols=3)
 \pagebreak
 
 
-### Q-Learning
-
-\pagebreak
 
 
 ## Conclusion
+
+We have investigated practical aspects of Markov decision processes and the
+reinforcement learning algorithms via value iteration, policy iteration and Q learning.
 
 
 
