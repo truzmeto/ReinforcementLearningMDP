@@ -148,8 +148,11 @@ taking actions greedily with respect to the learned Q-values[4].
 ## Easy Grid World Problem
 
 Easy Grid World problem composed of 6x6 grid, where agent starts its journey at bottom left corner and
-by finding optimal policy should end its journey at top right corner for a given structure of grid Fig1.
-All three algorithms are applied to this problem. Optimal policies are shown in Fig2. 
+by finding optimal policy should end its journey at top right corner for a given structure of maze Fig1.
+All three algorithms are applied to this problem. Optimal policies are illustrated in Fig2, where V-values
+are shown via heatmap: blue for high V-values and red for low V-values. Value iteration and policy iteration
+algorithms show similar optimal policy at 300 iterations. They both converge as early as 100 iterations Fig3.
+
 
 \begin{figure}
     \center
@@ -158,24 +161,6 @@ All three algorithms are applied to this problem. Optimal policies are shown in 
   \caption{Finale, optimal rout is depicted for all three different algorithms with the heat map.}
   \label{fig:easy_opt_map}
 \end{figure}
-
-
-
-
-
-## Hard Grid World Problem
-
-
-\begin{figure}
-    \center
-        \includegraphics[width=16.0cm]{plots/Hard_OptMaps.pdf}
-    \center
-  \caption{}
-  \label{fig:hard_opt_map}
-\end{figure}
-
-
-
 
 ```{r,echo=FALSE,fig.height=4.,fig.width=12,fig.cap= "Easy problem results"}
 
@@ -226,6 +211,24 @@ p3 <- ggplot(Easy_time, aes(x=Iterations)) +
 
 multiplot(p1,p2,p3,cols=3)
 ```
+
+
+
+
+## Hard Grid World Problem
+
+
+\begin{figure}
+    \center
+        \includegraphics[width=16.0cm]{plots/Hard_OptMaps.pdf}
+    \center
+  \caption{}
+  \label{fig:hard_opt_map}
+\end{figure}
+
+
+
+
 
 
 
