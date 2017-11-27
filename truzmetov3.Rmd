@@ -217,7 +217,7 @@ suggests that this optimal policy must be the correct policy. Even V-values show
 agree with each other. In addition, convergence plots shown in Fig.3 demonstrate that for both value iteration
 and policy iteration methods reward and steps converge very fast within 4-5 iterations, in fact both above
 methods convergence happened at the same time Fig4(a,b).
-In contrast, Q-learning algorithm takes a lot longer time to converge to optimal policy because even at very
+In contrast, Q-learning algorithm(lr=0.6, epsilon=0.1) takes a lot longer time to converge to optimal policy because even at very
 finale steps of iterations we see high fluctuations in reward value Fig.3.
 In a heatmap shown for Q-learning in Fig.2, cells (4,1) and (1,3) show the action which is opposite
 to actions of optimal policy suggesting that method hasn't completely converged to an optimal policy. 
@@ -314,7 +314,7 @@ p
 In order to get better understanding about Q-learning method I performed 2000 iterations with three
 different values of learning rate just to see if the policy can give similar optimal policy as other
 methods. This investigation was done on easy grid world problem with small number of states, where epsilon
-value kept constant $\epsilon=0.2$. As we can see in Fig.4 by increasing learning rate optimal policy improves
+value kept constant $\epsilon=0.1$. As we can see in Fig.4 by increasing learning rate optimal policy improves
 approaching the ideal policy obtained by other two methods. This suggests that larger learning rate assists
 converge faster, but as we can see in Fig.5 it also results in high fluctuation of reward value which makes
 convergence hard. In order to overcome this problem, one can apply a method where learning rate decreases with
@@ -398,7 +398,7 @@ p3 <- ggplot(Hard_time, aes(x=Iterations)) +
 multiplot(p1,p2,p3,cols=3)
 ```
 
-Heatmap for Q-learning(Fig.7) show that 1000 iterations was not
+Heatmap for Q-learning(Fig.7,lr=0.6, epsilon=0.1) show that 1000 iterations was not
 sufficient for convergence. Some of the cells, especially once at lower left corner show actions that
 point against the wall and some point opposite to a optimal policy achieved by other two methods. One
 can resolve this issue by reducing the learning rate, but that might require even longer number of iterations. 
@@ -453,7 +453,6 @@ computation time for hard problem is longer. For instance, it took ~700 ms to co
 to cover same amount of iterations easy grid world problem consumed ~125 ms. 
 
 
-
 \pagebreak
 
 ## Conclusion
@@ -463,8 +462,13 @@ iteration, policy iteration and Q learning. Our studies show that value iteratio
 to an optimal policy very fast since both methods use some form of domain knowledge. On the other hand, Q-learning algorithm
 directly learns from experience(model-free), which makes it hard to converge. Thus, in order to achieve optimal policy one has to iterate
 Q-learning method a lot longer. This doesn't mean longer time, because since method uses greedy approach time performance
-is almost constant with iterations. 
+is almost constant with iterations. On the other hand proper tuning of learning rate found to be important. For a high learning
+rate the agent improves its policy faster but struggles to settle down to an optimal policy. This problem can be solved by setting
+dynamics learning rate that decays with number of iterations. 
 
+\center 
+**Thanks**
+\center
 
 ## References
 
