@@ -8,7 +8,7 @@ Follow instructions below in order to get the code working
 
    git clone https://github.com/truzmeto/RL_MDP.git 
 
-2. install maven
+2. install maven 
 
    sudo apt-get install maven
 
@@ -18,4 +18,8 @@ Follow instructions below in order to get the code working
 
    mvn compile
 
-4. 
+4. run the code
+
+   mvn exec:java -Dexec.mainClass="assignment4.EasyGridWorldLauncher" > output/easy.txt
+   mvn exec:java -Dexec.mainClass="assignment4.HardGridWorldLauncher" > output/hard.txt
+

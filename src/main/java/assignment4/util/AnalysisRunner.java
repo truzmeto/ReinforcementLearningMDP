@@ -145,7 +145,7 @@ public class AnalysisRunner {
 				domain,
 				0.99,
 				hashingFactory,
-				0.99, 0.99);
+				0.99, 0.6);
 			
 			for (int i = 0; i < numIterations; i++) {
 				ea = agent.runLearningEpisode(env);

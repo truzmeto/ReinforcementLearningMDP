@@ -15,7 +15,7 @@ import burlap.oomdp.visualizer.Visualizer;
 
 public class HardGridWorldLauncher {
 	//These are some boolean variables that affect what will actually get executed
-	private static boolean visualizeInitialGridWorld = true; //Loads a GUI with the agent, walls, and goal
+	private static boolean visualizeInitialGridWorld = false; //Loads a GUI with the agent, walls, and goal
 	
 	//runValueIteration, runPolicyIteration, and runQLearning indicate which algorithms will run in the experiment
 	private static boolean runValueIteration = true; 
@@ -25,9 +25,9 @@ public class HardGridWorldLauncher {
 	//showValueIterationPolicyMap, showPolicyIterationPolicyMap, and showQLearningPolicyMap will open a GUI
 	//you can use to visualize the policy maps. Consider only having one variable set to true at a time
 	//since the pop-up window does not indicate what algorithm was used to generate the map.
-	private static boolean showValueIterationPolicyMap = true; 
-	private static boolean showPolicyIterationPolicyMap = true;
-	private static boolean showQLearningPolicyMap = true;
+	private static boolean showValueIterationPolicyMap = false; 
+	private static boolean showPolicyIterationPolicyMap = false;
+	private static boolean showQLearningPolicyMap = false;
 	
 	private static Integer MAX_ITERATIONS = 1000;
 	private static Integer NUM_INTERVALS = 100;
